@@ -3,7 +3,7 @@ const consumerModel = require("../models/consumer_model");
 const sellerModel = require("../models/seller_model");
 const transactionModel = require("../models/transaction_model");
 
-// Add Consumer
+// SignUp Consumer
 
 const addconsumer = async (req, res) => {
     console.log(req.body);

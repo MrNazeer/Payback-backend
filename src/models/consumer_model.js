@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 
-// const sellerNamesSchema = new mongoose.Schema({
-//     sellerName:{ type : String,
-//     required: false}
-//   });
+const sellerDetailsSchema = new mongoose.Schema({
+    shopName:{ type : String, required: false},
+    sellerId:{ type : String, required: false},
+    sellerLimit:{ type : Number, required: false},
+    totalAmt:{type : Number, default: 0}
+  });
 
 const consumerSchema = new mongoose.Schema(
     {
@@ -17,8 +19,9 @@ const consumerSchema = new mongoose.Schema(
             required:true,
         },
         mobNo:{
-            type: String,
+            type: Number,
             required:false,
+
         },
         mail:{
             type: String,
@@ -29,16 +32,12 @@ const consumerSchema = new mongoose.Schema(
             type: String,
             required:false,
         },
-        sellerSName:{
-            type: Array,
-            required:false,
-        },
-        googleId:{
-            type:string,
-            required:false,
-        },
         image:{
-            type:string,
+            type: String,
+            required:false,
+        },
+        sellers:{
+            type: [sellerDetailsSchema],
             required:false,
         }
     }

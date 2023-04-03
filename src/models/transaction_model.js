@@ -11,14 +11,22 @@ const transactionSchema = new mongoose.Schema(
             required:true,
         },
         amount:{
-            type: String,
+            type: Number,
             required:true,
         },
         date:{
+            type: Date,
+            required:false,
+        },
+        purpose:{
             type: String,
             required:true,
         },
-        purpose:{
+        sellerShopName:{
+            type: String,
+            required:true,
+        },
+        consumerName:{
             type: String,
             required:true,
         }

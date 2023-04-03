@@ -4,7 +4,7 @@ const transactionModel = require("../models/transaction_model");
 
 
 
-//add seller
+//SignUP seller
 const addseller = async (req, res) => {
     console.log(req.body);
     const seller = new sellerModel(req.body);
@@ -69,7 +69,7 @@ const updateSeller = async (req, res) =>{
 
 
 
-// Adding Consumer name and limit in seller schema
+// Adding New Consumer name and limit in seller schema and adding seller name and id along with amt
 
 const addConsumerInSeller = async (req, res) =>{
 
@@ -80,8 +80,26 @@ const addConsumerInSeller = async (req, res) =>{
   }
   const sellerid = req.params.id;
   const consumerId = req.body.ConsumerId;
+  const consumerLimit = req.body.limit;
+  const shopname = req.body.shopName;
 
-  sellerModel.findByIdAndUpdate(sellerid, {$push:{"ConsumerDetails": req.body}})
+  
+  const consumerData = await consumerModel.findById(consumerId);
+  if (!consumerData) {
+    res.status(404).send({
+      message: `Consumer Not exist`
+    });
+    return;
+  }
+  const cname = consumerData.fName;
+  const cmail = consumerData.mail;
+
+  await sellerModel.findByIdAndUpdate(sellerid, {$push:{"Consumers":[{
+    "ConsumerId":consumerId,
+    "ConsumerName":cname,
+    "mail":cmail,
+    "limit":consumerLimit
+  }] }})
     .then(data => {
       if (!data) {
         res.status(404).send({
@@ -90,7 +108,11 @@ const addConsumerInSeller = async (req, res) =>{
       } 
     })
 
-    consumerModel.findByIdAndUpdate(consumerId, {$push:{"sellerSName": req.params.id}})
+    await consumerModel.findByIdAndUpdate(consumerId, {$push:{"sellers": [{
+      "shopName":shopname,
+      "sellerId":sellerid,
+      "sellerLimit":consumerLimit
+    }]}})
     .then(data => {
       if (!data) {
         res.status(404).send({
