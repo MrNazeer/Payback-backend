@@ -17,12 +17,73 @@ const addconsumer = async (req, res) => {
     }
   };
 
+//Gauth login consumer
+
+const gauthConsumer = async (req, res) => {
+  console.log("Auth Model Called");
+  
+  if(!req.body){
+    return res.status(400).json({"msg":"server error"})    
+  }
+  const consumerGI = req.body.googleId;
+
+  try{
+    await consumerModel.findOne({googleId:consumerGI}).then(data =>{
+      if (data) {
+        res.status(200).send({message:"Login SuccessFully", data})
+      }
+      else res.status(404).send({message:"Please Signup Using gmail"})
+    })
+  }
+  catch (err){
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+
+}
+
+
+//Login consumer
+  const loginConsumer = async (req, res) =>{
+    console.log("login Module calleeeeeed");
+    if (!req.body) {
+      return res.status(400).json({"msg":"pls enter email and password cant be empty"})    
+    }
+
+    const usermail = req.body.mail;
+    const passWord = req.body.password;
+
+    try{
+      await consumerModel.findOne({mail:usermail}).then(data =>{
+        if(data){
+        if(data.password == passWord){
+          res.status(200).send({message:"Login Successfully",data});
+        }
+        else{
+          res.status(404).send({message:"MailId and Password is wrong"});
+        }
+      }
+      else{
+        res.status(404).send({message:"Please check Your mail Id"});
+      }
+      })
+    }
+    catch (err){
+      res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
+
+
+
 
 // get user details including shops name using Objectid.
 
 
   const getAllSellers = async (req, res) => {
-    console.log("called..................");
+    console.log("getAllSellers called..................",req.params.id);
   try {
     const data = await consumerModel.findById(req.params.id);
     res.json(data)
@@ -74,3 +135,5 @@ const updateConsumer = async (req, res) =>{
   module.exports.addconsumer = addconsumer;
   module.exports.getAllSellers = getAllSellers;
   module.exports.updateConsumer = updateConsumer;
+  module.exports.loginConsumer = loginConsumer;
+  module.exports.gauthConsumer = gauthConsumer;

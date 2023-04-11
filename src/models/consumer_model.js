@@ -14,10 +14,6 @@ const consumerSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        lName:{
-            type: String,
-            required:true,
-        },
         mobNo:{
             type: Number,
             required:false,
@@ -25,7 +21,7 @@ const consumerSchema = new mongoose.Schema(
         },
         mail:{
             type: String,
-            required:false,
+            required:true,
             unique:true,
         },
         password:{
@@ -33,6 +29,10 @@ const consumerSchema = new mongoose.Schema(
             required:false,
         },
         image:{
+            type: String,
+            required:false,
+        },
+        googleId:{
             type: String,
             required:false,
         },

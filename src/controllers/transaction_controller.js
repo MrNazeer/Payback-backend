@@ -12,7 +12,8 @@ const addTransation = async (req, res) => {
     const date = req.body.date;
     const purpose = req.body.purpose;
 
-//retriving sellerName
+  //retriving sellerName
+
     const sellerDetails = await sellerModel.findById(sellerId)
       if (!sellerDetails){
         res.status(404).send({message:"seller Id not found"})
@@ -21,7 +22,8 @@ const addTransation = async (req, res) => {
 
       const shopName = sellerDetails.shopName;
 
-//retriving consumerName
+  //retriving consumerName
+
       const consumerDetails = await consumerModel.findById(consumerId)
       if (!consumerDetails){
         res.status(404).send({message:"seller Id not found"})
@@ -34,7 +36,7 @@ const addTransation = async (req, res) => {
 
 
 
-//Upadting seller Total Amt
+  //Upadting seller side Total Amt
 
       await sellerModel.updateOne(
         { _id: sellerId , 'Consumers.ConsumerId': consumerId },
@@ -44,7 +46,7 @@ const addTransation = async (req, res) => {
           }          
         })
 
-//Upadting consumer Total Amt
+  //Upadting consumer side Total Amt
 
       await consumerModel.updateOne(
         { _id: consumerId , 'sellers.sellerId': sellerId },
@@ -52,7 +54,7 @@ const addTransation = async (req, res) => {
           if(!data) {
             res.status(404).send({message:"not"});
           }
-            else res.send({ message: "total amt is updated successfully.",data:data });
+            // else res.send({ message: "total amt is updated successfully.",data:data });
         })
     
 
@@ -69,26 +71,33 @@ const addTransation = async (req, res) => {
   
     try {
       await transaction.save();
-      // res.send(transaction);
+      res.send(transaction);
     } catch (error) {
       res.status(500).send(error);
     }
 
   };
 
+  //Add Transaction end here.............
+
+
+
 //get Over all Seller Transaction
 
   const getOverallSellerTransaction = async (req, res) => {
-        console.log("Called......")
+        console.log("Called......",req.params.id)
     try {
       const data = await transactionModel.find({"sellerId" : req.params.id})
-      res.status(200).json(data);
+      res.status(200).send(data);
     } catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
   };
+
+  //get Over all Seller Transaction end here.......................
+
 
 
   // get Over all Consumer Transaction using one object id either seller or consumer
@@ -105,14 +114,18 @@ try {
 }
 };
 
+// get Over all Consumer Transaction using one object id either seller or consumer end here..............
+
+
 
 //get the transaction between particular consumer and seller 
 
 const getIndiConsumerTransaction = async (req, res) => {
-    console.log("Called......")
+    console.log("getIndiConsumerTransaction Called......",req.query.sellerId, req.query.consumerId)
 try {
-  const data = await transactionModel.find({"consumerId" : req.body.consumerId, "sellerId" : req.body.sellerId})
-  res.status(200).json(data);
+  const data = await transactionModel.find({"consumerId" : req.query.consumerId, "sellerId" : req.query.sellerId})
+  res.status(200).send(data);
+  console.log(data)
 } catch (error) {
   res.status(500).json({
     message: error.message,
@@ -120,12 +133,12 @@ try {
 }
 };
 
+//get the transaction between particular consumer and seller end here ....................
 
 
 
 
 //Del a Transaction using transaction ID
-
 
 const delATransaction =  async (req,res) =>{
 
@@ -143,6 +156,9 @@ const delATransaction =  async (req,res) =>{
 
 }
 
+//Del a Transaction using transaction ID end here.....................
+
+
 
 
 //Del all Transaction using seller ID and Consumer ID.
@@ -150,17 +166,42 @@ const delATransaction =  async (req,res) =>{
 
 const delAllTransaction =  async (req,res) =>{
 
-  console.log("Called............");
+  console.log(" delAllTransaction Called............",req.query.consumerId,req.query.sellerId);
 
   
   try {
-    await transactionModel.deleteMany({"consumerId" : req.body.consumerId, "sellerId" : req.body.sellerId})
+
+    await transactionModel.deleteMany({"consumerId" : req.query.consumerId, "sellerId" : req.query.sellerId})
+
+    //Upadting seller side Total Amt
+
+    await sellerModel.updateOne(
+      { _id: req.query.sellerId , 'Consumers.ConsumerId': req.query.consumerId },
+      { $set: { 'Consumers.$.TotalAmt': 0 } }).then(data =>{
+        if(!data) {
+          res.status(404).send({message:"not"});
+        }          
+      })
+
+    //Upadting consumer side Total Amt
+
+    await consumerModel.updateOne(
+      { _id: req.query.consumerId , 'sellers.sellerId': req.query.sellerId },
+      { $set: { 'sellers.$.totalAmt': 0 } }).then(data =>{
+        if(!data) {
+          res.status(404).send({message:"not"});
+        }
+      })
+
+    
     res.status(200).json({"msg":`Deleted Successfully`})
   } catch (error) {
     res.send(error)
   }
 
 }
+
+//Del all Transaction using seller ID and Consumer ID end here........................
 
 
 

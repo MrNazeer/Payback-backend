@@ -5,7 +5,9 @@ const sellerRouter = require("./src/routes/seller_routes");
 const transactionRouter = require("./src/routes/transaction_routes");
 const url = "mongodb+srv://nazeer:8Ho1T00x9AK3CDzR@nodelearning.ks06m4w.mongodb.net/paybackdb?retryWrites=true&w=majority";
 const app = express();
+const cors = require("cors");
 
+app.use(cors())
 app.use(express.json())
 
 app.use("/consumer",consumerRouter);

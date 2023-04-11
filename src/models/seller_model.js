@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ConsumerdetailSchema = new mongoose.Schema({
-    ConsumerId: { type: String, required: false },
+    ConsumerId: { type: String, required: false, unique:true },
     ConsumerName: { type: String, required: false },
     TotalAmt:{ type: Number, default: 0 },
     mail:{ type: String, required: false },
@@ -26,6 +26,7 @@ const sellerSchema = new mongoose.Schema(
         gmail:{
             type: String,
             required:true,
+            unique:true
         },
         password:{
             type: String,
@@ -34,6 +35,7 @@ const sellerSchema = new mongoose.Schema(
         Consumers:{
             type: [ConsumerdetailSchema],
             required:false,
+            unique:true
         },
         image:{
             type:String,
