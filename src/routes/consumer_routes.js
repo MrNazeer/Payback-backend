@@ -20,7 +20,7 @@ async function checkAlreadyConsumer (req, res, next){
     consumer = await consumerModel.findOne({ mail: consumerMail})
       console.log(consumer, "----------------");
       if (consumer) {
-        return res.status(409).json({"msg":" He is Already a seller"})      
+        return res.status(409).send({message:" He is Already a seller"})      
       }
       
     } catch (error) {

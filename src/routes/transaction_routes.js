@@ -47,9 +47,10 @@ router.get("/get_IndividualTrans_consumer/", getIndiConsumerTransaction );
 
 router.post("/add_transaction/", checkHeisConsumer ,addTransation);
 
-router.delete("/del_transaction/:id", delATransaction);
+router.delete("/del_transaction/", delATransaction);
 
 router.delete("/del_allTransaction/",delAllTransaction);
+
 
 
 module.exports = router;

@@ -60,11 +60,11 @@ const loginSeller = async (req, res) =>{
 // get the all details of seller using object ID
 
   const detailsOfSeller = async (req, res) => {
-    console.log("called..................",req.params.id);
+    console.log("detailsOfSeller called..................",req.params.id);
   try {
     const data = await sellerModel.findById(req.params.id);
     res.send(data);
-    console.log("End",data);
+    console.log("data",data);
   } catch (error) {
     res.status(500).json({
       message: error.message

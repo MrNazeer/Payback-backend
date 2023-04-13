@@ -142,12 +142,55 @@ try {
 
 const delATransaction =  async (req,res) =>{
 
-  console.log("Called............");
+  console.log("delATransaction Called............");
+
+  let consumerId = req.query.consumerId;
+  let sellerId = req.query.sellerId;
+  let TransId = req.query.id;
+  let amt = req.query.amt;
+
+  console.log("cid :",consumerId, "Sid: ",sellerId, "TranId: ",TransId,"Amt :",amt);
 
   
   try {
-    await transactionModel.findOneAndDelete(req.params.id)
-    res.status(200).json({"msg":`Deleted ${res.id} Successfully`})
+
+    //Upadting seller side Total Amt
+
+    await sellerModel.updateOne(
+      { _id: sellerId , 'Consumers.ConsumerId': consumerId },
+      { $inc: { 'Consumers.$.TotalAmt': -amt } }).then(data =>{
+        if(!data) {
+          res.status(404).send({message:"not"});
+        }else{
+          console.log("am here 1",TransId);
+        }          
+      })
+
+    //Upadting consumer side Total Amt
+
+    await consumerModel.updateOne(
+      { _id: consumerId , 'sellers.sellerId': sellerId },
+      { $inc: { 'sellers.$.totalAmt': -amt } }).then(data =>{
+        if(!data) {
+          res.status(404).send({message:"not"});
+        }
+        else{
+          console.log("am here 2",TransId);
+        }     
+          // else res.send({ message: "total amt is updated successfully.",data:data });
+      })
+
+
+    await transactionModel.deleteOne({_id: TransId}).then((data)=>{
+      if(data) {
+        res.status(200).json({"msg":`Deleted Successfully`});
+      }else{
+        console.log("am here 3",TransId);
+      }       
+    }).catch((err)=>{
+      res.status(404).send({message:"Not deleted",err});
+    })
+    
     
   } 
   catch (error) {
@@ -204,6 +247,28 @@ const delAllTransaction =  async (req,res) =>{
 //Del all Transaction using seller ID and Consumer ID end here........................
 
 
+// Get Transation based On date
+
+// const TransactionGetterByDate = async(req, res)=>{
+//   sellerId = req.params.id;
+//   startDate = req.query.startDate;
+//   endDate = req.query.endDate;
+
+//   let transactions = await transactionModel.find({"sellerId":sellerId});
+
+//   if (startDate && endDate) {
+//     transactions = transactions.filter((transaction) => {
+//       const date = new Date(transaction.date);
+//       return date >= new Date(startDate) && date <= new Date(endDate);
+//     });
+//   }
+//   res.send(transactions);
+  
+
+// }
+
+
+// Get Transation based On date end here...........................
 
 
 
@@ -215,3 +280,5 @@ const delAllTransaction =  async (req,res) =>{
   module.exports.getIndiConsumerTransaction = getIndiConsumerTransaction;
   module.exports.delATransaction = delATransaction;
   module.exports.delAllTransaction = delAllTransaction;
+  // module.exports.TransactionGetterByDate = TransactionGetterByDate;
+

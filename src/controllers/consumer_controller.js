@@ -31,8 +31,11 @@ const gauthConsumer = async (req, res) => {
     await consumerModel.findOne({googleId:consumerGI}).then(data =>{
       if (data) {
         res.status(200).send({message:"Login SuccessFully", data})
+      }      
+    }).catch((err)=>{
+      if(err){
+        res.status(404).send({message:"Please Signup Using gmail"})
       }
-      else res.status(404).send({message:"Please Signup Using gmail"})
     })
   }
   catch (err){
@@ -126,7 +129,6 @@ const updateConsumer = async (req, res) =>{
 
 
 }
-
 
 
 
