@@ -90,7 +90,7 @@ const gauthConsumer = async (req, res) => {
     console.log("getAllSellers called..................",req.params.id);
   try {
     const data = await consumerModel.findById(req.params.id);
-    res.staus(200).json(data);
+    res.json(data)
   } catch (error) {
     res.status(500).json({
       message: error.message,
