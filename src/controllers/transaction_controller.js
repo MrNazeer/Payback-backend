@@ -5,7 +5,7 @@ const consumerModel = require("../models/consumer_model");
 //add a transactoion
 
 const addTransation = async (req, res) => {
-    console.log(req.body);
+  console.log("getOverallSellerTransaction Called......")
     const sellerId = req.body.sellerId;
     const consumerId = req.body.consumerId;
     const amount = req.body.amount;
@@ -85,7 +85,7 @@ const addTransation = async (req, res) => {
 //get Over all Seller Transaction
 
   const getOverallSellerTransaction = async (req, res) => {
-        console.log("Called......",req.params.id)
+        console.log("getOverallSellerTransaction Called......",req.params.id)
     try {
       const data = await transactionModel.find({"sellerId" : req.params.id})
       res.status(200).send(data);
@@ -103,7 +103,7 @@ const addTransation = async (req, res) => {
   // get Over all Consumer Transaction using one object id either seller or consumer
 
   const getOverallConsumerTransaction = async (req, res) => {
-    console.log("Called......")
+    console.log(" getOverallConsumerTransaction Called......")
 try {
   const data = await transactionModel.find({"consumerId" : req.params.id})
   res.status(200).json(data);

@@ -6,7 +6,8 @@ const transactionModel = require("../models/transaction_model");
 // SignUp Consumer
 
 const addconsumer = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+    console.log("addconsumer  Called.................");
     const consumer = new consumerModel(req.body);
   
     try {
@@ -20,7 +21,7 @@ const addconsumer = async (req, res) => {
 //Gauth login consumer
 
 const gauthConsumer = async (req, res) => {
-  console.log("Auth Model Called");
+  console.log("GAuth Model Called...............");
   
   if(!req.body){
     return res.status(400).json({"msg":"server error"})    
@@ -49,7 +50,7 @@ const gauthConsumer = async (req, res) => {
 
 //Login consumer
   const loginConsumer = async (req, res) =>{
-    console.log("login Module calleeeeeed");
+    console.log("login Module calleeeeeed...................");
     if (!req.body) {
       return res.status(400).json({"msg":"pls enter email and password cant be empty"})    
     }
@@ -104,7 +105,7 @@ const gauthConsumer = async (req, res) => {
 
 const updateConsumer = async (req, res) =>{
 
-  console.log("called..................");
+  console.log("updateConsumer called..................");
 
   if (!req.body) {
     return res.status(400).json({"msg":"Data cant be empty"})    

@@ -15,7 +15,7 @@ const {
 
 
 async function checkHeisConsumer(req, res, next) {
-    console.log("middleware runnned----------------------");
+    console.log("middleware runnned----------------------","",req.body.sellerId,"",req.body.consumerId);
     const sellerId = req.body.sellerId;
     const consumerId = req.body.consumerId;
 

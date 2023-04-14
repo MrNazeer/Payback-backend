@@ -6,7 +6,8 @@ const transactionModel = require("../models/transaction_model");
 
 //SignUP seller
 const addseller = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+    console.log("SignUP seller Module calleeeeeed");
     const seller = new sellerModel(req.body);
   
     try {
@@ -111,7 +112,7 @@ const updateSeller = async (req, res) =>{
 
 const addConsumerInSeller = async (req, res) =>{
 
-  console.log("addConsumerInSeller called..................");
+  console.log("addConsumerInSeller called..................","",req.params.id,"",req.body.ConsumerId,"",req.body.limit,"",req.body.shopName);
 
   if (!req.body) {
     return res.status(400).json({"msg":"Data cant be empty"})    
@@ -163,10 +164,10 @@ const addConsumerInSeller = async (req, res) =>{
     .then(data => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update  with Consumer id=${sellerid}. Maybe id was not found!`
+          message: `Cannot update  with Consumer id=${consumerId}. Maybe id was not found!`
         });
       } 
-      else res.send({ message: "Consumer name and seller name is updated successfully.",data:data });
+      else res.send({ message: "Consumer name and seller name is updated successfully.",data:data});
     })
 
     .catch(err => {
@@ -183,7 +184,7 @@ const addConsumerInSeller = async (req, res) =>{
 
 const removeConsumer =  async (req,res) =>{
   
-  console.log("called..................");
+  console.log(" removeConsumer called..................","",req.params.id,"",req.body.ConsumerId);
 
   if (!req.body) {
     return res.status(400).json({"msg":"Data cant be empty"})    
@@ -201,10 +202,9 @@ const removeConsumer =  async (req,res) =>{
         .then((data) => {
           if(!data){
             res.status(404).send({message:"He is not your Consumer to remove please cheack your consumer list"});
-          }
-          else(
+          } else{
             res.status(200).send({message:"Deleted SuccessFully"})
-          )
+          }       
         })
                           
   //removing seller details from consumer collection 
@@ -223,9 +223,9 @@ const removeConsumer =  async (req,res) =>{
 
         await transactionModel.deleteMany({"consumerId" : consumerid, "sellerId" : sellerid}).then((data) => {
           if(!data){
-            res.status(404).send({message:"No Transaction has been made..!"});
+            res.status(404).send({message:"Deleted succeccfully but No Transaction has been made..!"});
           }
-          else res.send({ message: "All the Transaction are Deleted Successfully.",data:data });
+          else res.send({ message: "All the Transaction are Deleted Successfully.",data});
         })
 
     .catch(err => {

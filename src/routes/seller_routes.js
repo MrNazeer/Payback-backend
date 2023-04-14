@@ -14,15 +14,15 @@ const {
 } = require("../controllers/seller_controller")
 
 async function checkAlreadyConsumer (req, res, next){
-    console.log(" checkAlreadyConsumer middleware runnned----------------------");
+    console.log(" checkAlreadyConsumer middleware runnned----------------------",req.params.id,req.body.ConsumerId);
     const sellerId = req.params.id;
     const consumerId = req.body.ConsumerId;
 
     try {
-    consumer = await sellerModel.findOne({ _id: sellerId , 'Consumers.ConsumerId': consumerId })
-      console.log(consumer, "----------------");
+    consumer = await sellerModel.findOne({ _id: sellerId , "Consumers.ConsumerId": consumerId })
+      console.log("He is Already a Consumer ----------------");
       if (consumer) {
-        return res.status(409).json({"msg":" He is Already a Consumer"})      
+        return res.status(409).json({"msg":" He is Already a Consumer",consumer})      
       }
       
     } catch (error) {
