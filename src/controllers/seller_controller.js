@@ -202,9 +202,7 @@ const removeConsumer =  async (req,res) =>{
         .then((data) => {
           if(!data){
             res.status(404).send({message:"He is not your Consumer to remove please cheack your consumer list"});
-          } else{
-            res.status(200).send({message:"Deleted SuccessFully"})
-          }       
+          }      
         })
                           
   //removing seller details from consumer collection 
