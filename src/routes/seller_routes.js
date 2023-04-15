@@ -10,7 +10,8 @@ const {
     addConsumerInSeller,
     removeConsumer,
     loginSeller,
-    upadteLimit
+    upadteLimit,
+    mailSenderForConsumer
 } = require("../controllers/seller_controller")
 
 async function checkAlreadyConsumer (req, res, next){
@@ -60,6 +61,8 @@ async function checkAlreadySeller (req, res, next){
 router.post("/signin_seller", checkAlreadySeller,addseller);
 
 router.post("/login_seller", loginSeller);
+
+router.post("/SendMail", mailSenderForConsumer);
 
 router.get("/detailsOfSeller/:id", detailsOfSeller);
 

@@ -291,6 +291,62 @@ const upadteLimit = async(req,res) => {
 
 }
 
+//Update Limit in Cosnumer side presented seller end here............
+
+
+
+// Mailsending function Start here....................................
+
+const nodemailer = require("nodemailer");
+
+const mailSenderForConsumer = async (req, res) => {
+  const consumerMailId = req.body.conMailId;
+  const sellerMailid = req.body.sellerMailId;
+  const sellerName = req.body.sellerName;
+  const amount = req.body.amount;
+
+  console.log("consumerMailId",consumerMailId);
+  console.log("sellerMailid",sellerMailid);
+  console.log("sellerName",sellerName);
+  console.log("amount",amount);
+
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "paybackorganization@gmail.com",
+      pass: "zoriywvnrsdhlblx",
+    },
+  }); 
+
+  try {
+    await transporter.sendMail({
+      from: 'paybackorganization@gmail.com',
+      to:consumerMailId,
+      subject: "From PayBack Team About Your credit Amount",
+      html: `
+        <h1>Hello there</h1>
+        <p>You Have to Pay <b>Rs.${amount}</b> to <b>${sellerName}</b>. Please pay as soon as possible !.</p>
+        <p>Are else please contact your seller <b>${sellerName}</b> and his Gmail ${sellerMailid}</p>
+        <br/>
+        <br/>
+        <br/>
+        <h4>Team PayBack</h4>
+      `,
+    }); 
+    res.status(200).send("Mail sent successfully");
+  } catch(err) {
+    console.error(err);
+    res.status(500).send("An error occurred while sending the email");
+  }
+}
+
+
+// Mailsending function End here....................................
+
+
 
 
   module.exports.addseller = addseller;
@@ -300,3 +356,4 @@ const upadteLimit = async(req,res) => {
   module.exports.removeConsumer = removeConsumer;
   module.exports.loginSeller = loginSeller;
   module.exports.upadteLimit = upadteLimit;
+  module.exports.mailSenderForConsumer = mailSenderForConsumer;

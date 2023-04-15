@@ -274,11 +274,14 @@ const delAllTransaction =  async (req,res) =>{
 
 
 
+
+
+
   module.exports.addTransation = addTransation;
   module.exports.getOverallSellerTransaction = getOverallSellerTransaction;
   module.exports.getOverallConsumerTransaction = getOverallConsumerTransaction;
   module.exports.getIndiConsumerTransaction = getIndiConsumerTransaction;
   module.exports.delATransaction = delATransaction;
   module.exports.delAllTransaction = delAllTransaction;
-  // module.exports.TransactionGetterByDate = TransactionGetterByDate;
+
 
